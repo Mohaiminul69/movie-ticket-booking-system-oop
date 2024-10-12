@@ -36,23 +36,19 @@ class Hall(Star_Cinema):
         return id not in self.seats
 
     def book_seats(self, id, seats):
-        if self.validate_movie_id(id):
-            return
-
-        not_available_seats = [
-            seat for seat in seats if self.seats[id][seat[0]][seat[1]] == 1
-        ]
-
-        if not_available_seats:
-            print(
-                f"\n --- Sorry these seats {not_available_seats} are not avaialabe ---"
-            )
-            return
-
         for seat in seats:
             self.seats[id][seat[0]][seat[1]] = 1
 
-        print(f"\n --- Successfully booked seats: {seats} --- ")
+        seatNumbers = ""
+        loop = 0
+        while loop < len(seats):
+            if loop == len(seats) - 1:
+                seatNumbers += f"({seats[loop][0]+1}, {seats[loop][1]+1})"
+                break
+            seatNumbers += f"({seats[loop][0]+1}, {seats[loop][1]+1}), "
+            loop += 1
+
+        print(f"\n --- Successfully booked seats: {seatNumbers} --- ")
 
     def view_show_list(self):
         print("\n --- Moive List ---\n")
@@ -64,6 +60,23 @@ class Hall(Star_Cinema):
 
         print(" --- These are the movies that are available in theatres ---")
         return
+
+    def validate_seat(self, id, rowNum, colNum):
+        rowLength = len(self.seats[id])
+        colLength = len(self.seats[id][0])
+        if rowNum < 1 or colNum < 1 or rowNum >= rowLength or colNum >= colLength:
+            print(
+                "\n *** This seat does not exist ***\n *** Please enter a valid seat number ***\n"
+            )
+            return True
+
+        if self.seats[id][rowNum - 1][colNum - 1] == 1:
+            print(
+                "\n *** This seat is already booked ***\n *** Please Choose another seat ***\n"
+            )
+            return True
+
+        return False
 
     def get_available_seat_count(self, id):
         count = 0
@@ -131,10 +144,15 @@ while True:
             )
             continue
         seats_to_be_booked = []
-        for seat in range(seat_amount):
-            row = int(input(f"Please enter row number of seat {seat+1}: "))
-            col = int(input(f"Please enter col number of seat {seat+1}: "))
+        seatNumber = 1
+        while seatNumber <= seat_amount:
+            row = int(input(f"Please enter row number of seat {seatNumber}: "))
+            col = int(input(f"Please enter col number of seat {seatNumber}: "))
+            invalid_seat = hall_1.validate_seat(id, row, col)
+            if invalid_seat:
+                continue
             seats_to_be_booked.append((row - 1, col - 1))
+            seatNumber += 1
         hall_1.book_seats(id, seats_to_be_booked)
 
     elif option == 4:
