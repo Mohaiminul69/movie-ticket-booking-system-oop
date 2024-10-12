@@ -18,29 +18,29 @@ class Star_Cinema:
 
 class Hall(Star_Cinema):
     def __init__(self, rows, cols, hall_no):
-        self.seats = {}
-        self.show_lists = []
-        self.rows = rows
-        self.cols = cols
-        self.hall_no = hall_no
+        self.__seats = {}
+        self.__show_lists = []
+        self.__rows = rows
+        self.__cols = cols
+        self.__hall_no = hall_no
 
     def entry_show(self, id, movie_name, time):
         show = (id, movie_name, time)
-        self.show_lists.append(show)
+        self.__show_lists.append(show)
 
-        seats = [[0 for _ in range(self.cols)] for _ in range(self.rows)]
-        self.seats[id] = seats
+        seats = [[0 for _ in range(self.__cols)] for _ in range(self.__rows)]
+        self.__seats[id] = seats
 
     def validate_movie_id(self, id):
-        if id not in self.seats:
+        if id not in self.__seats:
             print(
                 f"\n *** There is no movie with code no: {id}, ***\n *** Please enter a valid moive code ***"
             )
-        return id not in self.seats
+        return id not in self.__seats
 
     def book_seats(self, id, seats):
         for seat in seats:
-            self.seats[id][seat[0]][seat[1]] = 1
+            self.__seats[id][seat[0]][seat[1]] = 1
 
         seatNumbers = ""
         loop = 0
@@ -56,7 +56,7 @@ class Hall(Star_Cinema):
     def view_show_list(self):
         print("\n --- Moive List ---\n")
 
-        for idx, show in enumerate(self.show_lists):
+        for idx, show in enumerate(self.__show_lists):
             print(
                 f"{idx+1})\nMoive Code: {show[0]},\nMoive Name: {show[1]}\nPremiere Data: {show[2]}\n"
             )
@@ -65,15 +65,15 @@ class Hall(Star_Cinema):
         return
 
     def validate_seat(self, id, rowNum, colNum):
-        rowLength = len(self.seats[id])
-        colLength = len(self.seats[id][0])
+        rowLength = len(self.__seats[id])
+        colLength = len(self.__seats[id][0])
         if rowNum < 1 or colNum < 1 or rowNum >= rowLength or colNum >= colLength:
             print(
                 "\n *** This seat does not exist ***\n *** Please enter a valid seat number ***\n"
             )
             return True
 
-        if self.seats[id][rowNum - 1][colNum - 1] == 1:
+        if self.__seats[id][rowNum - 1][colNum - 1] == 1:
             print(
                 "\n *** This seat is already booked ***\n *** Please Choose another seat ***\n"
             )
@@ -83,7 +83,7 @@ class Hall(Star_Cinema):
 
     def get_available_seat_count(self, id):
         count = 0
-        for rows in self.seats[id]:
+        for rows in self.__seats[id]:
             for seat in rows:
                 if seat == 0:
                     count += 1
@@ -98,19 +98,19 @@ class Hall(Star_Cinema):
             "\n --- Available Seats ---\n\n * These are the seats that are availabe\n"
         )
 
-        for i, rows in enumerate(self.seats[id]):
+        for i, rows in enumerate(self.__seats[id]):
             for j, seat in enumerate(rows):
                 if seat == 0:
                     print(f" - Seat ({i+1}, {j+1}) -> is Available")
 
         print("\n --- Current seat status ---\n")
-        for row in self.seats[id]:
+        for row in self.__seats[id]:
             print(" ", row)
         self.get_available_seat_count(id)
         return
 
     def __repr__(self):
-        return f"Hall no: {self.hall_no}, Seats: {self.rows * self.cols}, rows: {self.rows}, cols: {self.cols}"
+        return f"Hall no: {self.__hall_no}, Seats: {self.__rows * self.__cols}, rows: {self.__rows}, cols: {self.__cols}"
 
 
 cinema = Star_Cinema()
