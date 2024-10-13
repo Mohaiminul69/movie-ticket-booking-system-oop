@@ -67,7 +67,7 @@ class Hall(Star_Cinema):
     def validate_seat(self, id, rowNum, colNum):
         rowLength = len(self.__seats[id])
         colLength = len(self.__seats[id][0])
-        if rowNum < 1 or colNum < 1 or rowNum >= rowLength or colNum >= colLength:
+        if rowNum < 1 or colNum < 1 or rowNum > rowLength or colNum > colLength:
             print(
                 "\n *** This seat does not exist ***\n *** Please enter a valid seat number ***\n"
             )
