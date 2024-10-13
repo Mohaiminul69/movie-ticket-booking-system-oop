@@ -2,9 +2,7 @@ class Star_Cinema:
     def __init__(self):
         self.__hall_list = []
 
-    def entry_hall(self, rows, cols):
-        hall_no = len(self.__hall_list) + 1
-        hall = Hall(rows, cols, hall_no)
+    def entry_hall(self, hall):
         self.__hall_list.append(hall)
 
     def get_hall_list(self):
@@ -23,6 +21,8 @@ class Hall(Star_Cinema):
         self.__rows = rows
         self.__cols = cols
         self.__hall_no = hall_no
+        super().__init__()
+        self.entry_hall(self)
 
     def entry_show(self, id, movie_name, time):
         show = (id, movie_name, time)
@@ -113,9 +113,7 @@ class Hall(Star_Cinema):
         return f"Hall no: {self.__hall_no}, Seats: {self.__rows * self.__cols}, rows: {self.__rows}, cols: {self.__cols}"
 
 
-cinema = Star_Cinema()
-cinema.entry_hall(5, 5)
-hall_1 = cinema.get_hall_list()[0]
+hall_1 = Hall(5, 5, 1)
 hall_1.entry_show("24151", "Your Name", "12/10/24")
 hall_1.entry_show("24154", "About Time", "15/10/24")
 hall_1.entry_show("24161", "Weathering With You", "13/10/24")
